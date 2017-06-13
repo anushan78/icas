@@ -1,0 +1,35 @@
+﻿@model IcasDrive.Models.ExamPaperViewModel
+
+@using (Html.BeginForm("UploadAsync", "Home", FormMethod.Post, new { enctype = "multipart/form-data" }))
+{
+<div class="row">
+    <fieldset>
+        <div class="col-md-4">
+            @Html.LabelFor(m => m.Grades)
+            @Html.DropDownListFor(m => m.SelectedGrade, Model.Grades, "Select Grade")
+        </div>
+        <br />
+        <div class="col-md-4">
+            @Html.DropDownListFor(m => m.SelectedSubject, Model.Subjects, "Select Subject")
+        </div>
+        <br />
+        <div class="col-md-4">
+            @Html.TextBoxFor(m => m.Year)
+        </div>
+        <br />
+        <div class="col-md-4">
+            @Html.CheckBoxFor(m => m.HasAnswers)
+        </div>
+        <br />
+        <div class="col-md-4">
+            <input type="file" name="uploadFile" />
+        </div>
+        <br />
+        <div class="col-md-4">
+            <input type="submit" class="btn btn-default" value="Save" />
+        </div>
+        @Html.HiddenFor(m => m.SelectedGrade)
+        @Html.HiddenFor(m => m.SelectedSubject)
+    </fieldset>
+</div>
+}
