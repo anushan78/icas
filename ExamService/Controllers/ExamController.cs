@@ -1,0 +1,74 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Net;
+using System.Net.Http;
+using System.Web.Http;
+using System.Web.Http.Description;
+using ExamService.Models;
+using ExamService.Services;
+
+namespace ExamService.Controllers
+{
+    /// <summary>
+    /// API for Exam paper operations
+    /// </summary>
+    [RoutePrefix("api/exam")]
+    public class ExamController : ApiController
+    {
+        private IIcasExamService ExamService { get; set; }
+
+        public ExamController(IIcasExamService examService)
+        {
+            ExamService = examService;
+        }
+
+        /// <summary>
+        /// Return all Exam papers
+        /// </summary>
+        /// <returns>All Exam papers</returns>
+        [Route("all")]
+        [ResponseType(typeof(ExamPaperDetails))]
+        public IHttpActionResult GetAll()
+        {
+            var examList = ExamService.GetAll();
+            var result = (examList != null) ? (IHttpActionResult)Ok(examList) : NotFound();
+
+            return result;
+        }
+
+        [Route("{gradeId:int}/forgrade")]
+        [ResponseType(typeof(ExamPaperDetails))]
+        public IHttpActionResult GetByGrade(int gradeId)
+        {
+            var examList = ExamService.GetByGrade(gradeId);
+            var result = (examList != null) ? (IHttpActionResult)Ok(examList) : NotFound();
+
+            return result;
+        }
+
+        /// <summary>
+        /// Create new exam paper
+        /// </summary>
+        /// <param name="examPaperDetails"></param>
+        /// <returns>Id of the newly created exam paper</returns>
+        [Route("create")]
+        [HttpPost]
+        public IHttpActionResult PostExam(ExamPaperDetails examPaperDetails)
+        {
+            IHttpActionResult result;
+
+            if (ModelState.IsValid)
+            {
+                int examPaperId = ExamService.Create(examPaperDetails);
+                result = Ok(examPaperId);
+            }
+            else
+            {
+                result = BadRequest(ModelState);
+            }
+
+            return result;
+        }
+    }
+}

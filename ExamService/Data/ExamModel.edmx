@@ -1,0 +1,201 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+    <Schema Namespace="IcasModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="ExamPaper">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="SubjectId" Type="int" Nullable="false" />
+          <Property Name="GradeId" Type="int" Nullable="false" />
+          <Property Name="Year" Type="nchar" MaxLength="10" Nullable="false" />
+          <Property Name="HasAnswers" Type="bit" Nullable="false" />
+          <Property Name="FileStoreId" Type="varchar" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="Grade">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="GradeName" Type="varchar" MaxLength="50" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Subject">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="SubjectName" Type="varchar" MaxLength="50" Nullable="false" />
+        </EntityType>
+        <Association Name="FK_ExamPaper_Grade">
+          <End Role="Grade" Type="Self.Grade" Multiplicity="1" />
+          <End Role="ExamPaper" Type="Self.ExamPaper" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Grade">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="ExamPaper">
+              <PropertyRef Name="GradeId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ExamPaper_Subject">
+          <End Role="Subject" Type="Self.Subject" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="ExamPaper" Type="Self.ExamPaper" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Subject">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="ExamPaper">
+              <PropertyRef Name="SubjectId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="IcasModelStoreContainer">
+          <EntitySet Name="ExamPaper" EntityType="Self.ExamPaper" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Grade" EntityType="Self.Grade" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Subject" EntityType="Self.Subject" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_ExamPaper_Grade" Association="Self.FK_ExamPaper_Grade">
+            <End Role="Grade" EntitySet="Grade" />
+            <End Role="ExamPaper" EntitySet="ExamPaper" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ExamPaper_Subject" Association="Self.FK_ExamPaper_Subject">
+            <End Role="Subject" EntitySet="Subject" />
+            <End Role="ExamPaper" EntitySet="ExamPaper" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="IcasModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="ExamPaper">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="SubjectId" Type="Int32" Nullable="false" />
+          <Property Name="GradeId" Type="Int32" Nullable="false" />
+          <Property Name="Year" Type="String" MaxLength="10" FixedLength="true" Unicode="true" Nullable="false" />
+          <Property Name="HasAnswers" Type="Boolean" Nullable="false" />
+          <NavigationProperty Name="Grade" Relationship="Self.FK_ExamPaper_Grade" FromRole="ExamPaper" ToRole="Grade" />
+          <NavigationProperty Name="Subject" Relationship="Self.FK_ExamPaper_Subject" FromRole="ExamPaper" ToRole="Subject" />
+          <Property Name="FileStoreId" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+        </EntityType>
+        <EntityType Name="Grade">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="GradeName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <NavigationProperty Name="ExamPapers" Relationship="Self.FK_ExamPaper_Grade" FromRole="Grade" ToRole="ExamPaper" />
+        </EntityType>
+        <EntityType Name="Subject">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="SubjectName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <NavigationProperty Name="ExamPapers" Relationship="Self.FK_ExamPaper_Subject" FromRole="Subject" ToRole="ExamPaper" />
+        </EntityType>
+        <Association Name="FK_ExamPaper_Grade">
+          <End Role="Grade" Type="Self.Grade" Multiplicity="1" />
+          <End Role="ExamPaper" Type="Self.ExamPaper" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Grade">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="ExamPaper">
+              <PropertyRef Name="GradeId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ExamPaper_Subject">
+          <End Role="Subject" Type="Self.Subject" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="ExamPaper" Type="Self.ExamPaper" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Subject">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="ExamPaper">
+              <PropertyRef Name="SubjectId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="IcasEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="ExamPapers" EntityType="Self.ExamPaper" />
+          <EntitySet Name="Grades" EntityType="Self.Grade" />
+          <EntitySet Name="Subjects" EntityType="Self.Subject" />
+          <AssociationSet Name="FK_ExamPaper_Grade" Association="Self.FK_ExamPaper_Grade">
+            <End Role="Grade" EntitySet="Grades" />
+            <End Role="ExamPaper" EntitySet="ExamPapers" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ExamPaper_Subject" Association="Self.FK_ExamPaper_Subject">
+            <End Role="Subject" EntitySet="Subjects" />
+            <End Role="ExamPaper" EntitySet="ExamPapers" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="IcasModelStoreContainer" CdmEntityContainer="IcasEntities">
+          <EntitySetMapping Name="ExamPapers">
+            <EntityTypeMapping TypeName="IcasModel.ExamPaper">
+              <MappingFragment StoreEntitySet="ExamPaper">
+                <ScalarProperty Name="FileStoreId" ColumnName="FileStoreId" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="SubjectId" ColumnName="SubjectId" />
+                <ScalarProperty Name="GradeId" ColumnName="GradeId" />
+                <ScalarProperty Name="Year" ColumnName="Year" />
+                <ScalarProperty Name="HasAnswers" ColumnName="HasAnswers" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Grades">
+            <EntityTypeMapping TypeName="IcasModel.Grade">
+              <MappingFragment StoreEntitySet="Grade">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="GradeName" ColumnName="GradeName" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Subjects">
+            <EntityTypeMapping TypeName="IcasModel.Subject">
+              <MappingFragment StoreEntitySet="Subject">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="SubjectName" ColumnName="SubjectName" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>
