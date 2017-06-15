@@ -31,5 +31,53 @@
         @Html.HiddenFor(m => m.SelectedGrade)
         @Html.HiddenFor(m => m.SelectedSubject)
     </fieldset>
+
+<div class="form-group">
+    <label class="control-label col-sm-3 col-md-2" for="Email">
+        Email
+        <span class="required">*</span>
+    </label>
+    <div class="col-sm-9 col-md-10">
+        <input class="form-control" id="Email" name="Email" type="text" value="">
+        <span class="help-inline">
+            <span class="field-validation-valid" data-valmsg-for="Email"></span>
+        </span>
+    </div>
 </div>
+    <br /><br />
+<div class="form-group">
+    <label class="control-label col-sm-3 col-md-2" for="Password">
+        Password
+        <span class="required">*</span>
+    </label>
+    <div class="col-sm-9 col-md-10">
+        <input class="form-control" id="Password" name="Password" type="text" value="">
+        <span class="help-inline">
+            <span class="field-validation-valid" data-valmsg-for="Password"></span>
+        </span>
+    </div>
+</div>
+<div class="form-group">
+    <div class="control-label col-sm-3 col-md-2"></div>
+    <div class="col-sm-9 col-md-10">
+        <div class="checkbox">
+            <label for="RememberMe">
+                <input id="RememberMe" name="RememberMe" type="checkbox" value="true">
+                <input name="RememberMe" type="hidden" value="false">
+                Remember Me
+                <span class="required">*</span>
+                <span class="help-inline">
+                    <span class="field-validation-valid" data-valmsg-for="RememberMe"></span>
+                </span>
+            </label>
+        </div>
+    </div>
+</div>
+<div class="form-group">
+    <span class="control-label col-sm-3 col-md-2"></span>
+    <div class="col-sm-9 col-md-10">
+        <button class="btn-default  btn" type="submit">Submit</button>
+    </div>
+</div>
+    </div>
 }
