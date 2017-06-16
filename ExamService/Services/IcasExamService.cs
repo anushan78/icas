@@ -1,12 +1,10 @@
-﻿using System;
+﻿using AutoMapper;
+using ExamService.Data;
+using ExamService.Models;
+using ExamService.Repositories;
+using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Web;
-using ExamService.Repositories;
-using ExamService.Models;
-using ExamService.Data;
-
-using AutoMapper;
 
 namespace ExamService.Services
 {

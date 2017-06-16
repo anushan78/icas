@@ -1,9 +1,5 @@
-﻿using System;
+﻿using ExamService.Data;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using ExamService.Data;
 
 namespace ExamService.Repositories
 {

@@ -1,12 +1,8 @@
-﻿using System;
+﻿using ExamService.Models;
+using ExamService.Services;
 using System.Collections.Generic;
-using System.Linq;
-using System.Net;
-using System.Net.Http;
 using System.Web.Http;
 using System.Web.Http.Description;
-using ExamService.Models;
-using ExamService.Services;
 
 namespace ExamService.Controllers
 {
@@ -28,7 +24,7 @@ namespace ExamService.Controllers
         /// </summary>
         /// <returns>All Exam papers</returns>
         [Route("all")]
-        [ResponseType(typeof(ExamPaperDetails))]
+        [ResponseType(typeof(IList<ExamPaperDetails>))]
         public IHttpActionResult GetAll()
         {
             var examList = ExamService.GetAll();
@@ -38,7 +34,7 @@ namespace ExamService.Controllers
         }
 
         [Route("{gradeId:int}/forgrade")]
-        [ResponseType(typeof(ExamPaperDetails))]
+        [ResponseType(typeof(IList<ExamPaperDetails>))]
         public IHttpActionResult GetByGrade(int gradeId)
         {
             var examList = ExamService.GetByGrade(gradeId);
