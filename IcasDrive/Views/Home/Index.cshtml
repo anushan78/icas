@@ -1,5 +1,7 @@
 ﻿@model IcasDrive.Models.ExamPaperViewModel
-
+@{
+    ViewBag.Title = "Add Exam Paper";
+}
 @using (Html.BeginForm("UploadAsync", "Home", FormMethod.Post, new { enctype = "multipart/form-data" }))
 {
 <div class="row">

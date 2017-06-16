@@ -68,8 +68,12 @@ namespace ExamService.App_Start
         /// <param name="kernel">The kernel.</param>
         private static void RegisterServices(IKernel kernel)
         {
+            kernel.Bind<IGradeRepository>().To<GradeRepository>();
             kernel.Bind<IExamRepository>().To<ExamRepository>();
+            kernel.Bind<ISubjectRepository>().To<SubjectRepository>();
+            kernel.Bind<IGradeService>().To<GradeService>();
             kernel.Bind<IIcasExamService>().To<IcasExamService>();
+            kernel.Bind<ISubjectService>().To<SubjectService>();
         }        
     }
 }

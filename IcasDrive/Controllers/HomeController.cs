@@ -1,23 +1,15 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Configuration;
-using System.Net.Http;
-using System.Net.Http.Headers;
-using System.Web.Mvc;
-using System.Threading;
-using System.Threading.Tasks;
-
-using Newtonsoft.Json;
-using Google.Apis.Auth.OAuth2;
-using Google.Apis.Auth.OAuth2.Mvc;
+﻿using Google.Apis.Auth.OAuth2.Mvc;
 using Google.Apis.Drive.v2;
 using Google.Apis.Drive.v2.Data;
 using Google.Apis.Services;
-using Google.Apis.Util.Store;
-
-using IcasDrive.Models;
 using IcasDrive.Core;
+using IcasDrive.Models;
+using System;
+using System.Collections.Generic;
+using System.Configuration;
+using System.Threading;
+using System.Threading.Tasks;
+using System.Web.Mvc;
 
 namespace IcasDrive.Controllers
 {

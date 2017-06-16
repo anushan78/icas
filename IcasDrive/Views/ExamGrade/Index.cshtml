@@ -1,0 +1,26 @@
+﻿@model IcasDrive.Models.GradeViewModel
+@{
+    ViewBag.Title = "Add Grade";
+}
+@using (Html.BeginForm("SaveGrade", "ExamGrade", FormMethod.Post))
+{
+    <div class="row">
+        <br />
+        <br />
+        <div class="form-group">
+            @Html.LabelFor(m => m.GradeName, new { @class = "control-label col-sm-3 col-md-2" })
+            <div class="col-sm-9 col-md-10">
+                @Html.TextBoxFor(m => m.GradeName, new { @class = "form-control" })
+            </div>
+        </div>
+        <br />
+        <br />
+        <div class="form-group">
+            <span class="control-label col-sm-3 col-md-2"></span>
+            <div class="col-sm-9 col-md-10">
+                <button class="btn-default btn" type="submit">Save</button>
+            </div>
+        </div>
+    </div>
+}
+
