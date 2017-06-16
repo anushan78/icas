@@ -3,81 +3,55 @@
 @using (Html.BeginForm("UploadAsync", "Home", FormMethod.Post, new { enctype = "multipart/form-data" }))
 {
 <div class="row">
-    <fieldset>
-        <div class="col-md-4">
-            @Html.LabelFor(m => m.Grades)
-            @Html.DropDownListFor(m => m.SelectedGrade, Model.Grades, "Select Grade")
+    <br />
+    <br />
+    <div class="form-group">
+        @Html.LabelFor(m => m.Grades, new { @class = "control-label col-sm-3 col-md-2" })
+        <div class="col-sm-9 col-md-10">
+            @Html.DropDownListFor(m => m.SelectedGrade, Model.Grades, "Select Grade", new { @class = "form-control" })
         </div>
-        <br />
-        <div class="col-md-4">
-            @Html.DropDownListFor(m => m.SelectedSubject, Model.Subjects, "Select Subject")
+    </div>
+    <br />
+    <br />
+    <div class="form-group">
+        @Html.LabelFor(m => m.Subjects, new { @class = "control-label col-sm-3 col-md-2" })
+        <div class="col-sm-9 col-md-10">
+            @Html.DropDownListFor(m => m.SelectedSubject, Model.Subjects, "Select Subject", new { @class = "form-control" })
         </div>
-        <br />
-        <div class="col-md-4">
-            @Html.TextBoxFor(m => m.Year)
+    </div>
+    <br />
+    <br />
+    <div class="form-group">
+        @Html.LabelFor(m => m.Year, new { @class = "control-label col-sm-3 col-md-2" })
+        <div class="col-sm-9 col-md-10">
+            @Html.TextBoxFor(m => m.Year, new { @class = "form-control" })
         </div>
-        <br />
-        <div class="col-md-4">
-            @Html.CheckBoxFor(m => m.HasAnswers)
+    </div>
+    <br />
+    <br />
+    <div class="form-group">
+        @Html.LabelFor(m => m.HasAnswers, new { @class = "control-label col-sm-3 col-md-2" })
+        <div class="col-sm-9 col-md-10">
+            @Html.CheckBoxFor(m => m.HasAnswers, new { @class = "checkbox-inline" })
         </div>
-        <br />
-        <div class="col-md-4">
+    </div>
+    <br />
+    <br />
+    <div class="form-group">
+        @Html.LabelFor(m => m.UploadFile, new { @class = "control-label col-sm-3 col-md-2" })
+        <div class="col-sm-9 col-md-10">
             <input type="file" name="uploadFile" />
         </div>
-        <br />
-        <div class="col-md-4">
-            <input type="submit" class="btn btn-default" value="Save" />
-        </div>
-        @Html.HiddenFor(m => m.SelectedGrade)
-        @Html.HiddenFor(m => m.SelectedSubject)
-    </fieldset>
-
-<div class="form-group">
-    <label class="control-label col-sm-3 col-md-2" for="Email">
-        Email
-        <span class="required">*</span>
-    </label>
-    <div class="col-sm-9 col-md-10">
-        <input class="form-control" id="Email" name="Email" type="text" value="">
-        <span class="help-inline">
-            <span class="field-validation-valid" data-valmsg-for="Email"></span>
-        </span>
     </div>
-</div>
-    <br /><br />
-<div class="form-group">
-    <label class="control-label col-sm-3 col-md-2" for="Password">
-        Password
-        <span class="required">*</span>
-    </label>
-    <div class="col-sm-9 col-md-10">
-        <input class="form-control" id="Password" name="Password" type="text" value="">
-        <span class="help-inline">
-            <span class="field-validation-valid" data-valmsg-for="Password"></span>
-        </span>
-    </div>
-</div>
-<div class="form-group">
-    <div class="control-label col-sm-3 col-md-2"></div>
-    <div class="col-sm-9 col-md-10">
-        <div class="checkbox">
-            <label for="RememberMe">
-                <input id="RememberMe" name="RememberMe" type="checkbox" value="true">
-                <input name="RememberMe" type="hidden" value="false">
-                Remember Me
-                <span class="required">*</span>
-                <span class="help-inline">
-                    <span class="field-validation-valid" data-valmsg-for="RememberMe"></span>
-                </span>
-            </label>
+    <br />
+    <br />
+    <div class="form-group">
+        <span class="control-label col-sm-3 col-md-2"></span>
+        <div class="col-sm-9 col-md-10">
+            <button class="btn-default btn" type="submit">Save</button>
         </div>
     </div>
+    @Html.HiddenFor(m => m.SelectedGrade)
+    @Html.HiddenFor(m => m.SelectedSubject)
 </div>
-<div class="form-group">
-    <span class="control-label col-sm-3 col-md-2"></span>
-    <div class="col-sm-9 col-md-10">
-        <button class="btn-default  btn" type="submit">Submit</button>
-    </div>
-</div>
-    </div>
 }
