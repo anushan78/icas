@@ -128,18 +128,25 @@ namespace IcasDrive.Controllers
 
         private ExamPaperViewModel assignGradesAndSubjectsListToModel(ExamPaperViewModel examPaperViewModel)
         {
-             // Todo: Get Values from Db
-            examPaperViewModel.Grades = new List<SelectListItem>()
-            {
-               new SelectListItem { Text = "Introductory", Value = "1" },
-               new SelectListItem { Text = "Year 3", Value = "2" }
-            };
+            var grades = HttpDataProvider.GetData<List<dynamic>>("grade/all");
+            var gradesListItems = new List<SelectListItem>();
 
-            examPaperViewModel.Subjects = new List<SelectListItem>()
+            grades.ForEach(delegate (dynamic grade)
             {
-                new SelectListItem { Text = "Science", Value = "1" },
-                new SelectListItem { Text = "Mathematics", Value = "2" }
-            };
+                gradesListItems.Add(new SelectListItem { Value = grade.Id, Text = grade.GradeName });
+            });
+
+            examPaperViewModel.Grades = gradesListItems;
+
+            var subjects = HttpDataProvider.GetData<List<dynamic>>("subject/all");
+            var subjectsListItems = new List<SelectListItem>();
+
+            subjects.ForEach(delegate (dynamic subject)
+            {
+                subjectsListItems.Add(new SelectListItem { Value = subject.Id, Text = subject.SubjectName });
+            });
+
+            examPaperViewModel.Subjects = subjectsListItems;
 
             return examPaperViewModel;
         }
