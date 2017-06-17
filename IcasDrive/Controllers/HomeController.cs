@@ -84,6 +84,48 @@ namespace IcasDrive.Controllers
             }
         }
 
+        public ActionResult Grade()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public ActionResult Grade(GradeViewModel model)
+        {
+            try
+            {
+                var gradeDetails = new { GradeName = model.GradeName };
+                var saveGradeResponse = HttpDataProvider.PostAndReturn<dynamic, dynamic>("grade/create", gradeDetails);
+            }
+            catch (Exception ex)
+            {
+
+            }
+
+            return View(model);
+        }
+
+        public ActionResult Subject()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public ActionResult Subject(SubjectViewModel model)
+        {
+            try
+            {
+                var subjectDetails = new { SubjectName = model.SubjectName };
+                var saveGradeResponse = HttpDataProvider.PostAndReturn<dynamic, dynamic>("subject/create", subjectDetails);
+            }
+            catch (Exception ex)
+            {
+
+            }
+
+            return View(model);
+        }
+
         private ExamPaperViewModel assignGradesAndSubjectsListToModel(ExamPaperViewModel examPaperViewModel)
         {
              // Todo: Get Values from Db
