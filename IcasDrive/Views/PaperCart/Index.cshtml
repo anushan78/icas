@@ -1,0 +1,19 @@
+﻿@model IcasDrive.Models.PaperCartViewModel
+@{
+    ViewBag.Title = "Paper Cart";
+}
+
+@using (Html.BeginForm("SelectPapers", "PaperCart", FormMethod.Post))
+{
+    <div class="row">
+        <br />
+        <br />
+        <div class="form-group">
+            <span class="control-label col-sm-3 col-md-2"></span>
+            <div class="col-sm-9 col-md-10">
+                <button class="btn-default btn" type="submit">Select</button>
+            </div>
+        </div>
+    </div>
+}
+
