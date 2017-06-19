@@ -8,6 +8,14 @@
     <br />
     <br />
     <div class="form-group">
+        @Html.LabelFor(m => m.PaperName, new { @class = "control-label col-sm-3 col-md-2" })
+        <div class="col-sm-9 col-md-10">
+            @Html.TextBoxFor(m => m.PaperName, new { @class = "form-control" })
+        </div>
+    </div>
+    <br />
+    <br />
+    <div class="form-group">
         @Html.LabelFor(m => m.Grades, new { @class = "control-label col-sm-3 col-md-2" })
         <div class="col-sm-9 col-md-10">
             @Html.DropDownListFor(m => m.SelectedGrade, Model.Grades, "Select Grade", new { @class = "form-control" })

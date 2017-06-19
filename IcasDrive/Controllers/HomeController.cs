@@ -14,14 +14,8 @@ using System.Web.Mvc;
 
 namespace IcasDrive.Controllers
 {
-    public class HomeController : Controller
+    public class HomeController : ControllerBase
     {
-        public HomeController()
-        {
-            HttpDataProvider = new HttpDataProvider(ConfigurationManager.AppSettings["ExamApiBaseUrl"]);
-            ApplicationName = ConfigurationManager.AppSettings["ApplicationName"];
-        }
-
         public ActionResult Index()
         {
             var examPaperViewModel = this.assignGradesAndSubjectsListToModel(new ExamPaperViewModel());
@@ -60,6 +54,7 @@ namespace IcasDrive.Controllers
                     var uploadResponse = uploadRequest.ResponseBody;
 
                     var examDetails = new {
+                                      PaperName = model.PaperName,
                                       SubjectId = model.SelectedSubject,
                                       GradeId = model.SelectedGrade,
                                       Year = model.Year.ToString(),
@@ -206,8 +201,5 @@ namespace IcasDrive.Controllers
             return examPaperViewModel;
         }
 
-        private HttpDataProvider HttpDataProvider { get; set; }
-
-        private string ApplicationName { get; set; }
     }
 }

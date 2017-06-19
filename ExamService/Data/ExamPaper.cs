@@ -20,6 +20,7 @@ namespace ExamService.Data
         public string Year { get; set; }
         public bool HasAnswers { get; set; }
         public string FileStoreId { get; set; }
+        public string PaperName { get; set; }
     
         public virtual Grade Grade { get; set; }
         public virtual Subject Subject { get; set; }

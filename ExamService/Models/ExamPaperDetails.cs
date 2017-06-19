@@ -7,6 +7,7 @@ namespace ExamService.Models
 {
     public class ExamPaperDetails
     {
+        public string PaperName { get; set; }
         public int SubjectId { get; set; }
         public int GradeId { get; set; }
         public string Year { get; set; }

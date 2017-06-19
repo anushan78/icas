@@ -10,6 +10,7 @@
             <PropertyRef Name="Id" />
           </Key>
           <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="PaperName" Type="varchar" MaxLength="50" Nullable="false" />
           <Property Name="SubjectId" Type="int" Nullable="false" />
           <Property Name="GradeId" Type="int" Nullable="false" />
           <Property Name="Year" Type="nchar" MaxLength="10" Nullable="false" />
@@ -85,6 +86,7 @@
           <NavigationProperty Name="Grade" Relationship="Self.FK_ExamPaper_Grade" FromRole="ExamPaper" ToRole="Grade" />
           <NavigationProperty Name="Subject" Relationship="Self.FK_ExamPaper_Subject" FromRole="ExamPaper" ToRole="Subject" />
           <Property Name="FileStoreId" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="PaperName" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
         </EntityType>
         <EntityType Name="Grade">
           <Key>
@@ -150,6 +152,7 @@
           <EntitySetMapping Name="ExamPapers">
             <EntityTypeMapping TypeName="IcasModel.ExamPaper">
               <MappingFragment StoreEntitySet="ExamPaper">
+                <ScalarProperty Name="PaperName" ColumnName="PaperName" />
                 <ScalarProperty Name="FileStoreId" ColumnName="FileStoreId" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
                 <ScalarProperty Name="SubjectId" ColumnName="SubjectId" />

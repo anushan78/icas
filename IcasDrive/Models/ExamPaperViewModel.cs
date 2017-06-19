@@ -15,5 +15,6 @@ namespace IcasDrive.Models
         public int Year { get; set; }
         public bool HasAnswers { get; set; }
         public HttpPostedFileBase UploadFile { get; set; }
+        public string PaperName { get; set; }
     }
 }

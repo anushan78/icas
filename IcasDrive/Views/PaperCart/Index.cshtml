@@ -3,17 +3,46 @@
     ViewBag.Title = "Paper Cart";
 }
 
-@using (Html.BeginForm("SelectPapers", "PaperCart", FormMethod.Post))
+@using (Html.BeginForm("GetExams", "PaperCart", FormMethod.Post, new { id = "getPapersForm", name = "getPapersForm" }))
 {
     <div class="row">
         <br />
         <br />
+        <div class="form-group">
+            @Html.LabelFor(m => m.Grades, new { @class = "control-label col-sm-3 col-md-2" })
+            <div class="col-sm-9 col-md-10">
+                @Html.DropDownListFor(m => m.SelectedGrade, Model.Grades, "Select Grade", new { @class = "form-control", onchange = "selectedIndexChanged()" })
+            </div>
+        </div>
+        <br />
+        <br />
+        @if (Model.GradePapers != null)
+        {
+        <table>
+            <thead></thead>
+            @foreach (var examPaper in Model.GradePapers)
+            {
+                <tr>
+                    <td>@examPaper.PaperName</td>
+                </tr>
+            }
+        </table>
+        <br />
+        <br />
+        }
         <div class="form-group">
             <span class="control-label col-sm-3 col-md-2"></span>
             <div class="col-sm-9 col-md-10">
                 <button class="btn-default btn" type="submit">Select</button>
             </div>
         </div>
+        @Html.HiddenFor(m => m.SelectedGrade)
     </div>
 }
+
+<script type="text/javascript">
+    function selectedIndexChanged() {
+        document.getPapersForm.submit();
+    }
+</script>
 
