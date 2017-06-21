@@ -29,8 +29,9 @@ namespace IcasDrive.Controllers
         [HttpPost]
         public ActionResult GetExams(PaperCartViewModel model)
         {
-            var apiUrl = string.Format("api/exam/{0}/forgrade", model.SelectedGrade);
+            var apiUrl = string.Format("exam/{0}/forgrade", model.SelectedGrade);
             var examList = HttpDataProvider.GetData<List<dynamic>>(apiUrl);
+            model.GradePapers = new List<GradeExamPaper>();
 
             examList.ForEach(delegate (dynamic exam)
             {
