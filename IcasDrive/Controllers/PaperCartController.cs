@@ -13,6 +13,15 @@ namespace IcasDrive.Controllers
         public ActionResult Index()
         {
             var paperCartViewModel = new PaperCartViewModel();
+            List<SelectListItem> gradesListItems = getGradesList();
+
+            paperCartViewModel.Grades = gradesListItems;
+
+            return View(paperCartViewModel);
+        }
+
+        private static List<SelectListItem> getGradesList()
+        {
             var grades = HttpDataProvider.GetData<List<dynamic>>("grade/all");
             var gradesListItems = new List<SelectListItem>();
 
@@ -20,10 +29,7 @@ namespace IcasDrive.Controllers
             {
                 gradesListItems.Add(new SelectListItem { Value = grade.Id, Text = grade.GradeName });
             });
-
-            paperCartViewModel.Grades = gradesListItems;
-
-            return View(paperCartViewModel);
+            return gradesListItems;
         }
 
         [HttpPost]
@@ -33,9 +39,12 @@ namespace IcasDrive.Controllers
             var examList = HttpDataProvider.GetData<List<dynamic>>(apiUrl);
             model.GradePapers = new List<GradeExamPaper>();
 
+            // Todo: Add this into cache
+            model.Grades = getGradesList();
+
             examList.ForEach(delegate (dynamic exam)
             {
-                model.GradePapers.Add(new GradeExamPaper { FileStoreId = exam.FileStoreId, PaperName = exam.PaperName });
+                model.GradePapers.Add(new GradeExamPaper { FileStoreId = exam.FileStoreId, PaperName = exam.PaperName, PaperId = exam.Id });
             });
 
             return View("Index", model);

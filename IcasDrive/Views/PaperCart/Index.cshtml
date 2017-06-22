@@ -18,15 +18,19 @@
         <br />
         @if (Model.GradePapers != null)
         {
-        <table>
-            <thead></thead>
-            @foreach (var examPaper in Model.GradePapers)
-            {
-                <tr>
-                    <td>@examPaper.PaperName</td>
-                </tr>
-            }
-        </table>
+        <div class="row">
+            <table class="table-responsive table-hover">
+                <thead>Paper Name</thead>
+                @foreach (var examPaper in Model.GradePapers)
+                {
+                    <tr>
+                        <td>@Html.Hidden(string.Format("fileSoreId{0}", examPaper.PaperId), examPaper.FileStoreId)</td>
+                        <td>@examPaper.PaperName</td>
+                        <td>@Html.CheckBox("cbExamSelected")</td>
+                    </tr>
+                }
+            </table>
+        </div>
         <br />
         <br />
         }

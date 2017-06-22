@@ -15,6 +15,7 @@ namespace IcasDrive.Models
 
     public class GradeExamPaper
     {
+        public int PaperId { get; set; }
         public string PaperName { get; set; }
         public string FileStoreId { get; set; }
     }
