@@ -66,7 +66,7 @@ namespace IcasDrive.Controllers
         {
             var currentGrandIdList = (List<int>)Session["SelectedIds"];
             var newIdList = new List<int>(Array.ConvertAll(examIds.Split('|'), item => int.Parse(item)));
-            var newGrandIdList = (currentGrandIdList != null) ? currentGrandIdList.Union(newIdList) : newIdList;
+            var newGrandIdList = (currentGrandIdList != null) ? currentGrandIdList.Union(newIdList).ToList() : newIdList;
             Session["SelectedIds"] = newGrandIdList;
         }
     }
