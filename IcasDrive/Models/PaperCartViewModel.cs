@@ -11,12 +11,12 @@ namespace IcasDrive.Models
         public IEnumerable<SelectListItem> Grades { get; set; }
         public int SelectedGrade { get; set; }
         public List<GradeExamPaper> GradePapers { get; set; } 
+        public string SelectedPapers { get; set; }
     }
 
     public class GradeExamPaper
     {
         public int PaperId { get; set; }
         public string PaperName { get; set; }
-        public string FileStoreId { get; set; }
     }
 }

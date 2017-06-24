@@ -2,51 +2,78 @@
 @{
     ViewBag.Title = "Paper Cart";
 }
-
-@using (Html.BeginForm("GetExams", "PaperCart", FormMethod.Post, new { id = "getPapersForm", name = "getPapersForm" }))
-{
-    <div class="row">
-        <br />
-        <br />
-        <div class="form-group">
-            @Html.LabelFor(m => m.Grades, new { @class = "control-label col-sm-3 col-md-2" })
-            <div class="col-sm-9 col-md-10">
-                @Html.DropDownListFor(m => m.SelectedGrade, Model.Grades, "Select Grade", new { @class = "form-control", onchange = "selectedIndexChanged()" })
-            </div>
+<div class="row">
+    @using (Html.BeginForm("GetExams", "PaperCart", FormMethod.Post, new { id = "getPapersForm", name = "getPapersForm" }))
+    {
+    <br />
+    <br />
+    <div class="form-group">
+        @Html.LabelFor(m => m.Grades, new { @class = "control-label col-sm-3 col-md-2" })
+        <div class="col-sm-9 col-md-10">
+            @Html.DropDownListFor(m => m.SelectedGrade, Model.Grades, "Select Grade", new { @class = "form-control", onchange = "selectedIndexChanged()" })
         </div>
-        <br />
-        <br />
-        @if (Model.GradePapers != null)
+    </div>
+    <br />
+    <br />
+        if (Model.GradePapers != null)
         {
         <div class="row">
-            <table class="table-responsive table-hover">
-                <thead>Paper Name</thead>
-                @foreach (var examPaper in Model.GradePapers)
-                {
-                    <tr>
-                        <td>@Html.Hidden(string.Format("fileSoreId{0}", examPaper.PaperId), examPaper.FileStoreId)</td>
-                        <td>@examPaper.PaperName</td>
-                        <td>@Html.CheckBox("cbExamSelected")</td>
-                    </tr>
-                }
-            </table>
-        </div>
-        <br />
-        <br />
-        }
-        <div class="form-group">
-            <span class="control-label col-sm-3 col-md-2"></span>
-            <div class="col-sm-9 col-md-10">
-                <button class="btn-default btn" type="submit">Select</button>
+            <div class="col-md-5 col-md-offset-2">
+                <table class="table-responsive table-hover">
+                    <thead>Paper Name</thead>
+                    @foreach (var examPaper in Model.GradePapers)
+                    {
+                        <tr>
+                            <td>@examPaper.PaperName</td>
+                            <td>@Html.CheckBox(string.Format("chkSelect{0}", examPaper.PaperId), new { id = examPaper.PaperId })</td>
+                        </tr>
+                    }
+                </table>
             </div>
         </div>
+        <br />
+        <br />
         @Html.HiddenFor(m => m.SelectedGrade)
-    </div>
-}
+        }
+    }
+    @using (Html.BeginForm("AddSelectedExams", "PaperCart", FormMethod.Post))
+    { 
+        <div class="btn-toolbar">
+            <button class="btn-default btn" type="submit">Add to Selection</button>
+            <button class="btn-primary btn" type="button">Next</button>
+        </div>
+        @Html.HiddenFor(m => m.SelectedPapers, new { id = "selectedPapers" })
+    }
+</div>
 
+<script src="~/Scripts/jquery-1.10.2.min.js" type="text/javascript"></script>
 <script type="text/javascript">
     function selectedIndexChanged() {
         document.getPapersForm.submit();
     }
+
+    $(document).ready(function() {
+        $(':checkbox').change(function () {
+            var selectedIds = $('#selectedPapers').val();
+            var chkSelect = $(this);
+
+            if (chkSelect.is(':checked')) {
+                if (selectedIds) {
+                    selectedIds = selectedIds + '|' + chkSelect.attr('id');
+                }
+                else {
+                    selectedIds = chkSelect.attr('id');
+                }
+            }
+            else {
+                var filteredIdsArray = jQuery.grep(selectedIds.split('|'), function (item) {
+                    return item != chkSelect.attr('id');
+                });
+                selectedIds = filteredIdsArray.join('|')
+            }
+
+            $('#selectedPapers').val(selectedIds);
+        });
+    });
 </script>
 

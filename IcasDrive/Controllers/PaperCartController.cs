@@ -44,10 +44,30 @@ namespace IcasDrive.Controllers
 
             examList.ForEach(delegate (dynamic exam)
             {
-                model.GradePapers.Add(new GradeExamPaper { FileStoreId = exam.FileStoreId, PaperName = exam.PaperName, PaperId = exam.Id });
+                model.GradePapers.Add(new GradeExamPaper { PaperId = exam.Id, PaperName = exam.PaperName });
             });
 
             return View("Index", model);
+        }
+
+        [HttpPost]
+        public ActionResult AddSelectedExams(PaperCartViewModel model)
+        {
+            AddSelectedExamIdsToGrandSession(model.SelectedPapers);
+            var paperCartViewModel = new PaperCartViewModel();
+            List<SelectListItem> gradesListItems = getGradesList();
+
+            paperCartViewModel.Grades = gradesListItems;
+
+            return View("Index", paperCartViewModel);
+        }
+
+        private void AddSelectedExamIdsToGrandSession(string examIds)
+        {
+            var currentGrandIdList = (List<int>)Session["SelectedIds"];
+            var newIdList = new List<int>(Array.ConvertAll(examIds.Split('|'), item => int.Parse(item)));
+            var newGrandIdList = (currentGrandIdList != null) ? currentGrandIdList.Union(newIdList) : newIdList;
+            Session["SelectedIds"] = newGrandIdList;
         }
     }
 }
