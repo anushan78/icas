@@ -8,6 +8,7 @@ namespace ExamService.Services
         List<ExamPaperDetails> GetAll();
         List<ExamPaperDetails> GetByGrade(int gradeId);
         int Create(ExamPaperDetails examPaperDetails);
+        List<ExamPaperDetails> GetByIds(List<int> ids);
         void Update(ExamPaperDetails examPaperDetails);
         void Delete(int examPaperId);
     }

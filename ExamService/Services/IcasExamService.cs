@@ -61,6 +61,15 @@ namespace ExamService.Services
             throw new NotImplementedException();
         }
 
+        public List<ExamPaperDetails> GetByIds(List<int> ids)
+        {
+            var exams = ExamRepository.GetAll()
+                .Where(ex => ids.Contains(ex.Id));
+            IMapper mapper = GetMapperForDto();
+
+            return mapper.Map<List<ExamPaper>, List<ExamPaperDetails>>(exams.ToList());
+        }
+
         private static IMapper GetMapperForDto()
         {
             // Todo: Create a common extension method. Refer sherpa app)

@@ -1,5 +1,6 @@
 ﻿using ExamService.Models;
 using ExamService.Services;
+using System;
 using System.Collections.Generic;
 using System.Web.Http;
 using System.Web.Http.Description;
@@ -63,6 +64,20 @@ namespace ExamService.Controllers
             {
                 result = BadRequest(ModelState);
             }
+
+            return result;
+        }
+
+        [Route("forids")]
+        [ResponseType(typeof(IList<ExamPaperDetails>))]
+        public IHttpActionResult GetByIds(string examIds)
+        {
+            string[] ids = examIds.Split('|');
+            int[] intIds = Array.ConvertAll(ids, item => int.Parse(item));
+            List<int> intList = new List<int>(intIds);
+            
+            var examList = ExamService.GetByIds(intList);
+            var result = (examList != null) ? (IHttpActionResult)Ok(examList) : NotFound();
 
             return result;
         }
