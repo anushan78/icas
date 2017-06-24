@@ -177,6 +177,7 @@
     <Compile Include="Controllers\ControllerBase.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\PaperCartController.cs" />
+    <Compile Include="Controllers\SelectionController.cs" />
     <Compile Include="Controllers\ValuesController.cs" />
     <Compile Include="Core\HttpDataProvider.cs" />
     <Compile Include="Global.asax.cs">
@@ -185,6 +186,7 @@
     <Compile Include="Models\ExamPaperViewModel.cs" />
     <Compile Include="Models\GradeViewModel.cs" />
     <Compile Include="Models\PaperCartViewModel.cs" />
+    <Compile Include="Models\SelectionViewModel.cs" />
     <Compile Include="Models\SubjectViewModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -222,6 +224,7 @@
     <Content Include="Views\Home\Subject.cshtml" />
     <Content Include="Views\Home\SelectPapers.cshtml" />
     <Content Include="Views\PaperCart\Index.cshtml" />
+    <Content Include="Views\Selection\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

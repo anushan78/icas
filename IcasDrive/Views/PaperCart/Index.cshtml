@@ -40,7 +40,7 @@
     { 
         <div class="btn-toolbar">
             <button class="btn-default btn" type="submit">Add to Selection</button>
-            <button class="btn-primary btn" type="button">Next</button>
+            @Html.ActionLink("Next", "Next", "PaperCart", new { @class = "btn-primary btn" })
         </div>
         @Html.HiddenFor(m => m.SelectedPapers, new { id = "selectedPapers" })
     }

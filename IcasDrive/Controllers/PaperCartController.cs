@@ -62,8 +62,14 @@ namespace IcasDrive.Controllers
             return View("Index", paperCartViewModel);
         }
 
+        public ActionResult Next()
+        {
+            return RedirectToAction("Index", "Selection");
+        }
+
         private void AddSelectedExamIdsToGrandSession(string examIds)
         {
+            // Todo: encrypt and send as parameter
             var currentGrandIdList = (List<int>)Session["SelectedIds"];
             var newIdList = new List<int>(Array.ConvertAll(examIds.Split('|'), item => int.Parse(item)));
             var newGrandIdList = (currentGrandIdList != null) ? currentGrandIdList.Union(newIdList).ToList() : newIdList;
