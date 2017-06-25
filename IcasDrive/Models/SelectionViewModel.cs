@@ -7,6 +7,13 @@ namespace IcasDrive.Models
 {
     public class SelectionViewModel
     {
+        public List<ExamLink> ExamLinks { get; set; }
+        public string CustomerName { get; set; }
+        public string EmailAddress { get; set; }
+    }
+
+    public class ExamLink
+    {
         public string PaperName { get; set; }
         public string PaperUrl { get; set; }
     }

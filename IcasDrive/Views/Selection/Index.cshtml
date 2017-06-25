@@ -2,6 +2,47 @@
 @{
     ViewBag.Title = "Final Selection";
 }
+@using (Html.BeginForm("SendEMail", "Selection", FormMethod.Post))
+{
 <div class="row">
-    <a href="https://drive.google.com/file/d/0ByOpc19oJzbja1NEa1VBcmZxaTQ/view">2013 mathes</a>
+    <br />
+    <br />
+    @if (Model.ExamLinks != null)
+    {
+    <div class="row">
+        <div class="col-md-5 col-md-offset-2">
+            <table class="table-responsive table-hover">
+                <thead>Reqested Papers</thead>
+                @foreach (var examLink in Model.ExamLinks)
+                {
+                    <tr>
+                        <td><a href="@examLink.PaperUrl" target="_blank">@examLink.PaperName</a></td>
+                    </tr>
+                }
+            </table>
+        </div>
+    </div>
+    }
+    <br />
+    <br />
+    <div class="form-group">
+        @Html.LabelFor(m => m.CustomerName, new { @class = "control-label col-sm-3 col-md-2" })
+        <div class="col-sm-9 col-md-10">
+            @Html.TextBoxFor(m => m.CustomerName, new { @class = "form-control" })
+        </div>
+    </div>
+    <br />
+    <br />
+    <div class="form-group">
+        @Html.LabelFor(m => m.EmailAddress, new { @class = "control-label col-sm-3 col-md-2" })
+        <div class="col-sm-9 col-md-10">
+            @Html.TextBoxFor(m => m.EmailAddress, new { @class = "form-control" })
+        </div>
+    </div>
+    <br />
+    <br />
+    <div class="btn-toolbar">
+        <button class="btn-primary btn" type="submit">Send Email</button>
+    </div>
 </div>
+}
