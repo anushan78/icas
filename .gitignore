@@ -337,3 +337,8 @@ packages/jQuery.1.10.2/Tools/install.ps1
 packages/jQuery.1.10.2/Tools/jquery-1.10.2.intellisense.js
 packages/jQuery.1.10.2/Tools/uninstall.ps1
 packages/jQuery.1.10.2/jQuery.1.10.2.nupkg
+IcasDrive/bin/RazorEngine.xml
+packages/RazorEngine.3.10.0/LICENSE.md
+packages/RazorEngine.3.10.0/RazorEngine.3.10.0.nupkg
+packages/RazorEngine.3.10.0/lib/net40/RazorEngine.xml
+packages/RazorEngine.3.10.0/lib/net45/RazorEngine.xml

@@ -7,6 +7,10 @@ using IcasDrive.Models;
 
 using System.Net;
 using System.Net.Mail;
+using RazorEngine.Text;
+using RazorEngine.Configuration;
+using RazorEngine;
+using RazorEngine.Templating;
 
 namespace IcasDrive.Controllers
 {
@@ -44,17 +48,23 @@ namespace IcasDrive.Controllers
             string subject = "Hello";
             string examLinkString = string.Empty;
 
-            foreach (var examLink in selectionViewModel.ExamLinks)
-            {
-                examLinkString += string.Format("<tr>" +
-                        "< td >< a href = \"{0}\" target = \"_blank\" >{1}</ a ></ td >" +
-                        " </ tr > \"  ", examLink.PaperUrl, examLink.PaperName);
-            }
+            var emailTemplate = "<html>" +
+                            "<body>" +
+                            "Hi @Model.CustomerName," +
+                            "Thank you very much for the prompt payment. Please find the download links for the requested papers: " +
+                                "<table>" +
+                                    "<thead>Paper Name</thead>" +
+                                    "@foreach(var examPaper in Model.GradePapers)" +
+                                    "{" +
+                                    "<tr>" +
+                                        "<td><a href=\"@examPaper.PaperUrl\" target =\"_blank\">@examPaper.PaperName</a></td>" +
+                                    "</tr>" +
+                                    "}" +
+                                "</table>" +
+                            "</body>" +
+                            "</html>";
 
-            string body = string.Format("<table class=\"table - responsive table - hover\">" +
-                    "<thead> Reqested Papers </ thead>" + 
-                    "{0}" +
-                    "</ table > \" ", examLinkString);
+            var body = Engine.Razor.RunCompile(emailTemplate, "templateKey", typeof(SelectionViewModel), selectionViewModel);
 
             using (MailMessage mail = new MailMessage())
             {
