@@ -11,6 +11,7 @@ using RazorEngine.Text;
 using RazorEngine.Configuration;
 using RazorEngine;
 using RazorEngine.Templating;
+using System.IO;
 
 namespace IcasDrive.Controllers
 {
@@ -41,28 +42,13 @@ namespace IcasDrive.Controllers
             selectionViewModel.ExamLinks = new List<ExamLink>();
             selectionViewModel.ExamLinks.Add(examnk);
 
-
+            // Todo: Add to config
             string emailFrom = "naomi_wilson82@yahoo.com";
             string password = "nishasaseni8209";
             string emailTo = model.EmailAddress;
             string subject = "Hello";
             string examLinkString = string.Empty;
-
-            var emailTemplate = "<html>" +
-                            "<body>" +
-                            "Hi @Model.CustomerName," +
-                            "Thank you very much for the prompt payment. Please find the download links for the requested papers: " +
-                                "<table>" +
-                                    "<thead>Paper Name</thead>" +
-                                    "@foreach(var examPaper in Model.GradePapers)" +
-                                    "{" +
-                                    "<tr>" +
-                                        "<td><a href=\"@examPaper.PaperUrl\" target =\"_blank\">@examPaper.PaperName</a></td>" +
-                                    "</tr>" +
-                                    "}" +
-                                "</table>" +
-                            "</body>" +
-                            "</html>";
+            var emailTemplate = System.IO.File.ReadAllText(Server.MapPath("~/Templates/PaperListEmailTemplate.cshtml"));
 
             var body = Engine.Razor.RunCompile(emailTemplate, "templateKey", typeof(SelectionViewModel), selectionViewModel);
 
