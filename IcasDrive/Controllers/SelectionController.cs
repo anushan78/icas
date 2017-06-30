@@ -1,32 +1,74 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-using System.Web.Mvc;
+﻿using Google.Apis.Auth.OAuth2.Mvc;
+using Google.Apis.Drive.v2;
+using Google.Apis.Requests;
+using Google.Apis.Services;
+using IcasDrive.Core;
 using IcasDrive.Models;
-
-using System.Net;
-using System.Net.Mail;
-using RazorEngine.Text;
-using RazorEngine.Configuration;
 using RazorEngine;
 using RazorEngine.Templating;
-using System.IO;
+using System;
+using System.Collections.Generic;
+using System.Net;
+using System.Net.Mail;
+using System.Threading;
+using System.Threading.Tasks;
+using System.Web.Mvc;
 
 namespace IcasDrive.Controllers
 {
     public class SelectionController : ControllerBase
     {
         // GET: Selection
-        public ActionResult Index()
+        public async Task<ActionResult> Index(CancellationToken cancellationToken)
         {
-            var selectionViewModel = new SelectionViewModel();
-            // Todo: fill with rows
-            var examLink = new ExamLink { PaperName = "Introductory English 2013", PaperUrl = "https://drive.google.com/open?id=0ByOpc19oJzbja1NEa1VBcmZxaTQ" };
-            selectionViewModel.ExamLinks = new List<ExamLink>();
-            selectionViewModel.ExamLinks.Add(examLink);
+            var result = await new AuthorizationCodeMvcApp(this, new AppFlowMetadata()).AuthorizeAsync(cancellationToken);
 
-            return View(selectionViewModel);
+            if (result.Credential != null)
+            {
+                var service = new DriveService(new BaseClientService.Initializer
+                {
+                    HttpClientInitializer = result.Credential,
+                    ApplicationName = ApplicationName
+                });
+
+                try
+                {
+                    var selectionViewModel = new SelectionViewModel();
+                    var fileId = string.Empty;
+                    var examLinksList = new List<ExamLink>();
+
+                    var request = new BatchRequest(service);
+                    var selectedPaperIds = string.Join(",", ((List<int>)Session["SelectedIds"]).ToArray());
+                    var examPapers = HttpDataProvider.GetData<List<dynamic>>(string.Format("exam/forids?examIds={0}", selectedPaperIds));
+
+                    examPapers.ForEach(delegate (dynamic examPaper) {
+                        fileId = examPaper.FileStoreId;
+
+                        request.Queue<Google.Apis.Drive.v2.Data.File>(service.Files.Get(fileId),
+                            (file, error, x, message) =>
+                            {
+                                if (error != null) 
+                                    throw new Exception("error");
+                                else
+                                    examLinksList.Add(new ExamLink { PaperName = examPaper.PaperName, PaperUrl = file.WebContentLink });
+                            });
+                    });
+
+                    await request.ExecuteAsync();
+
+                    selectionViewModel.ExamLinks = examLinksList;
+                    return View(selectionViewModel);
+                }
+                catch (Exception ex)
+                {
+                    // Todo: Log errors and show friendly error
+                    throw ex;
+                }
+            }
+            else
+            {
+                return new RedirectResult(result.RedirectUri);
+            }
         }
 
         [HttpPost]

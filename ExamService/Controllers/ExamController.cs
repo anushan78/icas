@@ -72,7 +72,7 @@ namespace ExamService.Controllers
         [ResponseType(typeof(IList<ExamPaperDetails>))]
         public IHttpActionResult GetByIds(string examIds)
         {
-            string[] ids = examIds.Split('|');
+            string[] ids = examIds.Split(',');
             int[] intIds = Array.ConvertAll(ids, item => int.Parse(item));
             List<int> intList = new List<int>(intIds);
             
