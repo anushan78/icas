@@ -13,10 +13,12 @@
         <div class="col-md-5 col-md-offset-2">
             <table class="table-responsive table-hover">
                 <thead>Reqested Papers</thead>
-                @foreach (var examLink in Model.ExamLinks)
+                @for (int count = 0; count < Model.ExamLinks.Count; count++)
                 {
                     <tr>
-                        <td><a href="@examLink.PaperUrl" target="_blank">@examLink.PaperName</a></td>
+                        <td>@Model.ExamLinks[count].PaperName</td>
+                        <td>@Html.HiddenFor(m => m.ExamLinks[count].PaperUrl)</td>
+                        <td>@Html.HiddenFor(m => m.ExamLinks[count].PaperName)</td>
                     </tr>
                 }
             </table>
