@@ -50,6 +50,7 @@ namespace IcasDrive.Controllers
                 try
                 {
                     FilesResource.InsertMediaUpload uploadRequest = service.Files.Insert(file, model.UploadFile.InputStream, file.MimeType);
+                    uploadRequest.ChunkSize = 256 * 1024;
                     var awList = await uploadRequest.UploadAsync();
                     var uploadResponse = uploadRequest.ResponseBody;
 
@@ -76,60 +77,6 @@ namespace IcasDrive.Controllers
             {
                 TempData.Add("examViewModel", model);
                 TempData.Add("isInitialPost", true);
-                return new RedirectResult(result.RedirectUri);
-            }
-        }
-
-        public ActionResult SelectPapers()
-        {
-            return View();
-        }
-
-        public async Task<ActionResult> SelectPapersAsync(CancellationToken cancellationToken, SubjectViewModel model)
-        {
-            var result = await new AuthorizationCodeMvcApp(this, new AppFlowMetadata()).AuthorizeAsync(cancellationToken);
-
-            if (result.Credential != null)
-            {
-                var service = new DriveService(new BaseClientService.Initializer
-                {
-                    HttpClientInitializer = result.Credential,
-                    ApplicationName = ApplicationName
-                });
-
-                try
-                {
-                    var request = new BatchRequest(service);
-                    string[] fileIds = new string[] { "0ByOpc19oJzbjNGstb2xtdDhJeGc", "0ByOpc19oJzbjZzY4a1hub2ZRRzg" };
-                    List<string> fileUrls = new List<string>();
-
-                    for (int i = 0; i < 2; i++)
-                    {
-                        request.Queue<File>(service.Files.Get(fileIds[i]),
-                            (file, error, x, message) =>
-                            {
-                                if (error != null)
-                                {
-
-                                }
-                                else
-                                {
-                                    fileUrls.Add(file.WebContentLink);
-                                }
-                            });
-                    }
-
-                    await request.ExecuteAsync();
-                }
-                catch (Exception ex)
-                {
-                    // Todo: Log errors and show friendly error
-                }
-
-                return View("SelectPapers");
-            }
-            else
-            {
                 return new RedirectResult(result.RedirectUri);
             }
         }
