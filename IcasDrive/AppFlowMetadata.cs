@@ -16,8 +16,8 @@ namespace IcasDrive
             {
                 ClientSecrets = new ClientSecrets
                 {
-                    ClientId = "165622861920-qlemhbk2qk4kuna4tcliopdmn76s9tna.apps.googleusercontent.com",
-                    ClientSecret = "lTKC1yuXPFiREGzIjHJrY7JL"
+                    ClientId = "666965685631-hoakoepnhs78qefg2j0raef66scl0jbq.apps.googleusercontent.com",
+                    ClientSecret = "sdFACRkLRTgJ9UzZP-GNndMx"
                 },
                 Scopes = new[] { DriveService.Scope.Drive },
                 DataStore = new FileDataStore("Drive.Api.Auth.Store")

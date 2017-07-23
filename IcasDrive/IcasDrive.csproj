@@ -177,6 +177,7 @@
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Controllers\AuthCallbackController.cs" />
+    <Compile Include="Controllers\BulkController.cs" />
     <Compile Include="Controllers\ControllerBase.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\PaperCartController.cs" />
@@ -186,6 +187,7 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Models\BulkViewModel.cs" />
     <Compile Include="Models\ExamPaperViewModel.cs" />
     <Compile Include="Models\GradeViewModel.cs" />
     <Compile Include="Models\PaperCartViewModel.cs" />
@@ -229,6 +231,7 @@
     <Content Include="Views\PaperCart\Index.cshtml" />
     <Content Include="Views\Selection\Index.cshtml" />
     <Content Include="Templates\PaperListEmailTemplate.cshtml" />
+    <Content Include="Views\Bulk\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

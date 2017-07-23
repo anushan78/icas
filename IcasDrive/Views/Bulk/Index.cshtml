@@ -1,0 +1,78 @@
+﻿@model IcasDrive.Models.BulkViewModel
+@{
+    ViewBag.Title = "Map Drive Papers";
+}
+
+<div class="row">
+    <br />
+    <br />
+    @using (Html.BeginForm("GetDrivePapersByFolder", "Bulk", FormMethod.Post, new { id = "GetDrivePapersByFolderForm", name = "GetDrivePapersByFolderForm" }))
+    {
+    <div class="form-group">
+        @Html.LabelFor(m => m.Folders, new { @class = "control-label col-sm-3 col-md-2" })
+        <div class="col-sm-9 col-md-10">
+            @Html.DropDownListFor(m => m.SelectedFolder, Model.Folders, "Select Drive Folder", new { @class = "form-control" })
+        </div>
+    </div>
+    <br />
+    <br />
+    <div class="form-group">
+        @Html.LabelFor(m => m.DrivePapers, new { @class = "control-label col-sm-3 col-md-2" })
+        <div class="col-sm-9 col-md-10">
+            @Html.DropDownListFor(m => m.SelectedDrivePaper, Model.DrivePapers, "Select Drive Paper", new { @class = "form-control" })
+        </div>
+    </div>
+    <br />
+    <br />
+    <div class="form-group">
+        @Html.LabelFor(m => m.PaperName, new { @class = "control-label col-sm-3 col-md-2" })
+        <div class="col-sm-9 col-md-10">
+            @Html.TextBoxFor(m => m.PaperName, new { @class = "form-control" })
+        </div>
+    </div>
+    <br />
+    <br />
+    <div class="form-group">
+        @Html.LabelFor(m => m.Grades, new { @class = "control-label col-sm-3 col-md-2" })
+        <div class="col-sm-9 col-md-10">
+            @Html.DropDownListFor(m => m.SelectedGrade, Model.Grades, "Select Grade", new { @class = "form-control" })
+        </div>
+    </div>
+    <br />
+    <br />
+    <div class="form-group">
+        @Html.LabelFor(m => m.Subjects, new { @class = "control-label col-sm-3 col-md-2" })
+        <div class="col-sm-9 col-md-10">
+            @Html.DropDownListFor(m => m.SelectedSubject, Model.Subjects, "Select Subject", new { @class = "form-control" })
+        </div>
+    </div>
+    <br />
+    <br />
+    <div class="form-group">
+        @Html.LabelFor(m => m.Year, new { @class = "control-label col-sm-3 col-md-2" })
+        <div class="col-sm-9 col-md-10">
+            @Html.TextBoxFor(m => m.Year, new { @class = "form-control" })
+        </div>
+    </div>
+    <br />
+    <br />
+    <div class="form-group">
+        @Html.LabelFor(m => m.HasAnswers, new { @class = "control-label col-sm-3 col-md-2" })
+        <div class="col-sm-9 col-md-10">
+            @Html.CheckBoxFor(m => m.HasAnswers, new { @class = "checkbox-inline" })
+        </div>
+    </div>
+    <br />
+    <br />
+    <div class="form-group">
+        <span class="control-label col-sm-3 col-md-2"></span>
+        <div class="col-sm-9 col-md-10">
+            <button class="btn-default btn" type="submit">Save</button>
+        </div>
+    </div>
+    @Html.HiddenFor(m => m.SelectedFolder)
+    @Html.HiddenFor(m => m.SelectedDrivePaper)
+    @Html.HiddenFor(m => m.SelectedGrade)
+    @Html.HiddenFor(m => m.SelectedSubject)
+    }
+</div>
