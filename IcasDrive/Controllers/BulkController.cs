@@ -44,6 +44,8 @@ namespace IcasDrive.Controllers
                     }
 
                     bulkViewModel.Folders = folderListItems;
+                    bulkViewModel.Grades = getGradesList();
+                    bulkViewModel.Subjects = getSubjectsList();
 
                     return View(bulkViewModel);
                 }
@@ -63,6 +65,32 @@ namespace IcasDrive.Controllers
         public ActionResult GetDrivePapersByFolder(BulkViewModel model)
         {
             return View();
+        }
+
+        private static List<SelectListItem> getGradesList()
+        {
+            var grades = HttpDataProvider.GetData<List<dynamic>>("grade/all");
+            var gradesListItems = new List<SelectListItem>();
+
+            grades.ForEach(delegate (dynamic grade)
+            {
+                gradesListItems.Add(new SelectListItem { Value = grade.Id, Text = grade.GradeName });
+            });
+
+            return gradesListItems;
+        }
+
+        private static List<SelectListItem> getSubjectsList()
+        {
+            var subjects = HttpDataProvider.GetData<List<dynamic>>("subject/all");
+            var subjectsListItems = new List<SelectListItem>();
+
+            subjects.ForEach(delegate (dynamic subject)
+            {
+                subjectsListItems.Add(new SelectListItem { Value = subject.Id, Text = subject.SubjectName });
+            });
+
+            return subjectsListItems;
         }
     }
 }
