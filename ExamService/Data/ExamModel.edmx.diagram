@@ -10,6 +10,7 @@
         <EntityTypeShape EntityType="IcasModel.Subject" Width="1.5" PointX="0.75" PointY="5.375" IsExpanded="true" />
         <AssociationConnector Association="IcasModel.FK_ExamPaper_Grade" ManuallyRouted="false" />
         <AssociationConnector Association="IcasModel.FK_ExamPaper_Subject" ManuallyRouted="false" />
+        <EntityTypeShape EntityType="IcasModel.DriveFolder" Width="1.5" PointX="5.625" PointY="2" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

@@ -5,6 +5,14 @@
     <!-- SSDL content -->
     <edmx:StorageModels>
     <Schema Namespace="IcasModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="DriveFolder">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="DriveId" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="FolderName" Type="nvarchar" MaxLength="50" Nullable="false" />
+        </EntityType>
         <EntityType Name="ExamPaper">
           <Key>
             <PropertyRef Name="Id" />
@@ -58,6 +66,7 @@
           </ReferentialConstraint>
         </Association>
         <EntityContainer Name="IcasModelStoreContainer">
+          <EntitySet Name="DriveFolder" EntityType="Self.DriveFolder" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="ExamPaper" EntityType="Self.ExamPaper" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Grade" EntityType="Self.Grade" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Subject" EntityType="Self.Subject" Schema="dbo" store:Type="Tables" />
@@ -142,7 +151,16 @@
             <End Role="Subject" EntitySet="Subjects" />
             <End Role="ExamPaper" EntitySet="ExamPapers" />
           </AssociationSet>
+          <EntitySet Name="DriveFolders" EntityType="IcasModel.DriveFolder" />
         </EntityContainer>
+        <EntityType Name="DriveFolder">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="DriveId" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="FolderName" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+        </EntityType>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -175,6 +193,15 @@
               <MappingFragment StoreEntitySet="Subject">
                 <ScalarProperty Name="Id" ColumnName="Id" />
                 <ScalarProperty Name="SubjectName" ColumnName="SubjectName" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="DriveFolders">
+            <EntityTypeMapping TypeName="IcasModel.DriveFolder">
+              <MappingFragment StoreEntitySet="DriveFolder">
+                <ScalarProperty Name="FolderName" ColumnName="FolderName" />
+                <ScalarProperty Name="DriveId" ColumnName="DriveId" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
