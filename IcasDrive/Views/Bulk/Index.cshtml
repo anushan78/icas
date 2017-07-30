@@ -16,17 +16,14 @@
     </div>
     <br />
     <br />
-    if (Model.DrivePapers != null)
-    {
     <div class="form-group">
         @Html.LabelFor(m => m.DrivePapers, new { @class = "control-label col-sm-3 col-md-2" })
         <div class="col-sm-9 col-md-10">
-            @Html.DropDownListFor(m => m.SelectedDrivePaper, Model.DrivePapers, "Select Drive Paper", new { @class = "form-control" })
+            @Html.DropDownListFor(m => m.SelectedDrivePaper, new SelectList(Enumerable.Empty<SelectListItem>(), "Id", "Title"), "Select Drive Paper", new { @class = "form-control" })
         </div>
     </div>
     <br />
     <br />
-    }
     <div class="form-group">
         @Html.LabelFor(m => m.PaperName, new { @class = "control-label col-sm-3 col-md-2" })
         <div class="col-sm-9 col-md-10">
@@ -82,6 +79,19 @@
 <script src="~/Scripts/jquery-1.10.2.min.js" type="text/javascript"></script>
 <script type="text/javascript">
     function selectedIndexChanged() {
-        document.GetDrivePapersByFolderForm.submit();
+        var selectedFolderId = $("#SelectedFolder").val();
+        $.ajax({
+            url: '/Bulk/GetDrivePapersAsync',
+            type: "GET",
+            dataType: "JSON",
+            data: { selectedFolder: selectedFolderId },
+            success: function (drivePapers) {
+                $("#SelectedDrivePaper").html(""); // clear before appending new list 
+                $.each(drivePapers, function (i, drivePaper) {
+                    $("#SelectedDrivePaper").append(
+                        $('<option></option>').val(drivePaper.Id).html(drivePaper.Title));
+                });
+            }
+        });
     }
 </script>

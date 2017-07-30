@@ -100,6 +100,44 @@ namespace IcasDrive.Controllers
             }
         }
 
+        public async Task<ActionResult> GetDrivePapersAsync(CancellationToken cancellationToken, string selectedFolder)
+        {
+            var result = await new AuthorizationCodeMvcApp(this, new AppFlowMetadata()).AuthorizeAsync(cancellationToken);
+
+            if (result.Credential != null)
+            {
+                var service = new DriveService(new BaseClientService.Initializer
+                {
+                    HttpClientInitializer = result.Credential,
+                    ApplicationName = ApplicationName
+                });
+
+                var drivePaperListItems = new List<dynamic>();
+
+                try
+                {
+                    var request = service.Files.List();
+                    request.Q = string.Format("mimeType = 'application/pdf' and '{0}' in parents", selectedFolder);
+                    var fileList = await request.ExecuteAsync();
+
+                    foreach (var file in fileList.Items)
+                    {
+                        drivePaperListItems.Add(new { Id = file.Id, Title = file.Title });
+                    }
+                }
+                catch (Exception ex)
+                {
+                    // Todo: Log errors and show friendly error
+                }
+
+                return Json(drivePaperListItems, JsonRequestBehavior.AllowGet);
+            }
+            else
+            {
+                return new RedirectResult(result.RedirectUri);
+            }
+        }
+
         private List<SelectListItem> getGradesList()
         {
             var gradesListItems = new List<SelectListItem>();
