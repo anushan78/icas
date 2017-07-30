@@ -36,14 +36,9 @@ namespace IcasDrive.Controllers
                     request.Q = "mimeType = 'application/vnd.google-apps.folder'";
 
                     var fileList = await request.ExecuteAsync();
-                    var folderListItems = new List<SelectListItem>();
+                    Session["GoogleDriveFolders"] = fileList;
 
-                    foreach (var file in fileList.Items)
-                    {
-                        folderListItems.Add(new SelectListItem { Value = file.Id, Text = file.Title });
-                    }
-
-                    bulkViewModel.Folders = folderListItems;
+                    bulkViewModel.Folders = getDriveFoldersList(fileList);
                     bulkViewModel.Grades = getGradesList();
                     bulkViewModel.Subjects = getSubjectsList();
 
@@ -62,17 +57,59 @@ namespace IcasDrive.Controllers
         }
 
         [HttpPost]
-        public ActionResult GetDrivePapersByFolder(BulkViewModel model)
+        public async Task<ActionResult> GetDrivePapersByFolderAsync(CancellationToken cancellationToken, BulkViewModel model)
         {
-            return View();
+            var result = await new AuthorizationCodeMvcApp(this, new AppFlowMetadata()).AuthorizeAsync(cancellationToken);
+
+            if (result.Credential != null)
+            {
+                var service = new DriveService(new BaseClientService.Initializer
+                {
+                    HttpClientInitializer = result.Credential,
+                    ApplicationName = ApplicationName
+                });
+
+                try
+                {
+                    var request = service.Files.List();
+                    request.Q = string.Format("mimeType = 'application/pdf' and '{0}' in parents", model.SelectedFolder);
+                    var fileList = await request.ExecuteAsync();
+                    var drivePaperListItems = new List<SelectListItem>();
+
+                    foreach (var file in fileList.Items)
+                    {
+                        drivePaperListItems.Add(new SelectListItem { Value = file.Id, Text = file.Title });
+                    }
+
+                    model.Folders = getDriveFoldersList((FileList)Session["GoogleDriveFolders"]);
+                    model.Grades = getGradesList();
+                    model.Subjects = getSubjectsList();
+                    model.DrivePapers = drivePaperListItems;
+
+                }
+                catch (Exception ex)
+                {
+                    // Todo: Log errors and show friendly error
+                }
+
+                return View("Index", model);
+            }
+            else
+            {
+                return new RedirectResult(result.RedirectUri);
+            }
         }
 
-        private static List<SelectListItem> getGradesList()
+        private List<SelectListItem> getGradesList()
         {
-            var grades = HttpDataProvider.GetData<List<dynamic>>("grade/all");
             var gradesListItems = new List<SelectListItem>();
 
-            grades.ForEach(delegate (dynamic grade)
+            if (Session["Grades"] == null)
+            {
+                Session["Grades"] = HttpDataProvider.GetData<List<dynamic>>("grade/all");
+            }
+
+            ((List<dynamic>)Session["Grades"]).ForEach(delegate (dynamic grade)
             {
                 gradesListItems.Add(new SelectListItem { Value = grade.Id, Text = grade.GradeName });
             });
@@ -80,17 +117,33 @@ namespace IcasDrive.Controllers
             return gradesListItems;
         }
 
-        private static List<SelectListItem> getSubjectsList()
+        private List<SelectListItem> getSubjectsList()
         {
-            var subjects = HttpDataProvider.GetData<List<dynamic>>("subject/all");
             var subjectsListItems = new List<SelectListItem>();
 
-            subjects.ForEach(delegate (dynamic subject)
+            if (Session["Subjects"] == null)
+            {
+                Session["Subjects"] = HttpDataProvider.GetData<List<dynamic>>("subject/all");
+            }
+
+            ((List<dynamic>)Session["Subjects"]).ForEach(delegate (dynamic subject)
             {
                 subjectsListItems.Add(new SelectListItem { Value = subject.Id, Text = subject.SubjectName });
             });
 
             return subjectsListItems;
+        }
+
+        private List<SelectListItem> getDriveFoldersList(FileList fileList)
+        {
+            var folderListItems = new List<SelectListItem>();
+
+            foreach (var file in fileList.Items)
+            {
+                folderListItems.Add(new SelectListItem { Value = file.Id, Text = file.Title });
+            }
+
+            return folderListItems;
         }
     }
 }

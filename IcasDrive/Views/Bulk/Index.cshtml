@@ -6,17 +6,17 @@
 <div class="row">
     <br />
     <br />
-    @using (Html.BeginForm("GetDrivePapersByFolder", "Bulk", FormMethod.Post, new { id = "GetDrivePapersByFolderForm", name = "GetDrivePapersByFolderForm" }))
+    @using (Html.BeginForm("GetDrivePapersByFolderAsync", "Bulk", FormMethod.Post, new { id = "GetDrivePapersByFolderForm", name = "GetDrivePapersByFolderForm" }))
     {
     <div class="form-group">
         @Html.LabelFor(m => m.Folders, new { @class = "control-label col-sm-3 col-md-2" })
         <div class="col-sm-9 col-md-10">
-            @Html.DropDownListFor(m => m.SelectedFolder, Model.Folders, "Select Drive Folder", new { @class = "form-control" })
+            @Html.DropDownListFor(m => m.SelectedFolder, Model.Folders, "Select Drive Folder", new { @class = "form-control", onchange = "selectedIndexChanged()" })
         </div>
     </div>
     <br />
     <br />
-    if (!string.IsNullOrEmpty(Model.SelectedDrivePaper))
+    if (Model.DrivePapers != null)
     {
     <div class="form-group">
         @Html.LabelFor(m => m.DrivePapers, new { @class = "control-label col-sm-3 col-md-2" })
@@ -79,3 +79,9 @@
     @Html.HiddenFor(m => m.SelectedSubject)
     }
 </div>
+<script src="~/Scripts/jquery-1.10.2.min.js" type="text/javascript"></script>
+<script type="text/javascript">
+    function selectedIndexChanged() {
+        document.GetDrivePapersByFolderForm.submit();
+    }
+</script>
