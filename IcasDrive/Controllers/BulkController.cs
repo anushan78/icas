@@ -57,47 +57,11 @@ namespace IcasDrive.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult> GetDrivePapersByFolderAsync(CancellationToken cancellationToken, BulkViewModel model)
+        public ActionResult AddDrivePapersList(BulkViewModel model)
         {
-            var result = await new AuthorizationCodeMvcApp(this, new AppFlowMetadata()).AuthorizeAsync(cancellationToken);
 
-            if (result.Credential != null)
-            {
-                var service = new DriveService(new BaseClientService.Initializer
-                {
-                    HttpClientInitializer = result.Credential,
-                    ApplicationName = ApplicationName
-                });
 
-                try
-                {
-                    var request = service.Files.List();
-                    request.Q = string.Format("mimeType = 'application/pdf' and '{0}' in parents", model.SelectedFolder);
-                    var fileList = await request.ExecuteAsync();
-                    var drivePaperListItems = new List<SelectListItem>();
-
-                    foreach (var file in fileList.Items)
-                    {
-                        drivePaperListItems.Add(new SelectListItem { Value = file.Id, Text = file.Title });
-                    }
-
-                    model.Folders = getDriveFoldersList((FileList)Session["GoogleDriveFolders"]);
-                    model.Grades = getGradesList();
-                    model.Subjects = getSubjectsList();
-                    model.DrivePapers = drivePaperListItems;
-
-                }
-                catch (Exception ex)
-                {
-                    // Todo: Log errors and show friendly error
-                }
-
-                return View("Index", model);
-            }
-            else
-            {
-                return new RedirectResult(result.RedirectUri);
-            }
+            return View("Index", model);
         }
 
         public async Task<ActionResult> GetDrivePapersAsync(CancellationToken cancellationToken, string selectedFolder)
