@@ -68,6 +68,38 @@ namespace ExamService.Controllers
             return result;
         }
 
+        /// <summary>
+        /// Create list of new exam papers
+        /// </summary>
+        /// <param name="examPaperList"></param>
+        /// <returns></returns>
+        [Route("createlist")]
+        [HttpPost]
+        [ResponseType(typeof(IList<int>))]
+        public IHttpActionResult PostExams([FromBody]IList<ExamPaperDetails> examPaperList)
+        {
+            IHttpActionResult result;
+            List<int> examIds = new List<int>();
+            int examId;
+
+            if (ModelState.IsValid)
+            {
+                foreach (var examdetail in examPaperList)
+                {
+                    examId = ExamService.Create(examdetail);
+                    examIds.Add(examId);
+                }
+
+                result = Ok(examIds);
+            }
+            else
+            {
+                result = BadRequest(ModelState);
+            }
+
+            return result;
+        }
+
         [Route("forids")]
         [ResponseType(typeof(IList<ExamPaperDetails>))]
         public IHttpActionResult GetByIds(string examIds)
