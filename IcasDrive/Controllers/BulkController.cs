@@ -56,9 +56,26 @@ namespace IcasDrive.Controllers
             }
         }
 
-        //[HttpPost]
+        [HttpPost]
         public ActionResult AddDrivePapersList(BulkViewModel model)
         {
+            var examPapers = (List<dynamic>)Session["ICASPapers"];
+
+            if (examPapers != null && examPapers.Count > 0)
+            {
+                try
+                {
+                    var createExamsListResponse = HttpDataProvider.PostAndReturn<List<dynamic>, List<int>>("exam/createlist", examPapers);
+                    Session.Remove("ICASPapers");
+                    RedirectToAction("Index");
+                }
+                catch (Exception ex)
+                {
+                    // Todo: error handling
+                }
+            }
+            // Todo: Error handling
+
             return View("Index", model);
         }
 
@@ -66,12 +83,12 @@ namespace IcasDrive.Controllers
         {
             var examPaper = new
             {
-                FileStoreId = fileStoreId,
                 PaperName = paperName,
-                SelectedSubject = selectedSubject,
-                SelectedGrade = selectedGrade,
+                SubjectId = selectedSubject,
+                GradeId = selectedGrade,
+                Year = year,
                 HasAnswers = hasAnswers,
-                Year = year
+                FileStoreId = fileStoreId
             };
 
             // Todo: Try using Webgrid
