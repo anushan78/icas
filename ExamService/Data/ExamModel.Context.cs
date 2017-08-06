@@ -28,6 +28,5 @@ namespace ExamService.Data
         public virtual DbSet<ExamPaper> ExamPapers { get; set; }
         public virtual DbSet<Grade> Grades { get; set; }
         public virtual DbSet<Subject> Subjects { get; set; }
-        public virtual DbSet<DriveFolder> DriveFolders { get; set; }
     }
 }

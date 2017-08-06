@@ -71,11 +71,9 @@ namespace ExamService.App_Start
             kernel.Bind<IGradeRepository>().To<GradeRepository>();
             kernel.Bind<IExamRepository>().To<ExamRepository>();
             kernel.Bind<ISubjectRepository>().To<SubjectRepository>();
-            kernel.Bind<IDriveFolderRepository>().To<DriveFolderRepository>();
             kernel.Bind<IGradeService>().To<GradeService>();
             kernel.Bind<IIcasExamService>().To<IcasExamService>();
             kernel.Bind<ISubjectService>().To<SubjectService>();
-            kernel.Bind<IDriveFolderService>().To<DriveFolderService>();
         }        
     }
 }
