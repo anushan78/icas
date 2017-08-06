@@ -56,12 +56,32 @@ namespace IcasDrive.Controllers
             }
         }
 
-        [HttpPost]
+        //[HttpPost]
         public ActionResult AddDrivePapersList(BulkViewModel model)
         {
-
-
             return View("Index", model);
+        }
+
+        public ActionResult BuildPaperSelectionList(string fileStoreId, string paperName, int selectedSubject, int selectedGrade, bool hasAnswers, int year)
+        {
+            var examPaper = new
+            {
+                FileStoreId = fileStoreId,
+                PaperName = paperName,
+                SelectedSubject = selectedSubject,
+                SelectedGrade = selectedGrade,
+                HasAnswers = hasAnswers,
+                Year = year
+            };
+
+            // Todo: Try using Webgrid
+            var examPapers = (Session["ICASPapers"] == null)
+                ? new List<dynamic>()
+                : ((List<dynamic>)Session["ICASPapers"]);
+            examPapers.Add(examPaper);
+            Session["ICASPapers"] = examPapers;
+
+            return Json(examPapers, JsonRequestBehavior.AllowGet);
         }
 
         public async Task<ActionResult> GetDrivePapersAsync(CancellationToken cancellationToken, string selectedFolder)
