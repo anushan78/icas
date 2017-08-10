@@ -67,7 +67,7 @@ namespace IcasDrive.Controllers
                 {
                     var createExamsListResponse = HttpDataProvider.PostAndReturn<List<dynamic>, List<int>>("exam/createlist", examPapers);
                     Session.Remove("ICASPapers");
-                    RedirectToAction("Index");
+                    return RedirectToAction("Index");
                 }
                 catch (Exception ex)
                 {
