@@ -120,7 +120,7 @@
                 paperName: $('#PaperName').val(),
                 selectedSubject: $("#SelectedSubject option:selected").val(),
                 selectedGrade: $("#SelectedGrade option:selected").val(),
-                hasAnswers: true,
+                hasAnswers: $('#HasAnswers').is(":checked"),
                 year: $('#Year').val(),
             },
             success: function (selectPapers) {
