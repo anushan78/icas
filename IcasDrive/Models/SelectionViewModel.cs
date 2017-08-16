@@ -14,6 +14,7 @@ namespace IcasDrive.Models
 
     public class ExamLink
     {
+        public string FileId { get; set; }
         public string PaperName { get; set; }
         public string PaperUrl { get; set; }
     }

@@ -35,7 +35,6 @@ namespace IcasDrive.Controllers
                 try
                 {
                     var selectionViewModel = new SelectionViewModel();
-                    var fileId = string.Empty;
                     var examLinksList = new List<ExamLink>();
 
                     var request = new BatchRequest(service);
@@ -43,7 +42,7 @@ namespace IcasDrive.Controllers
                     var examPapers = HttpDataProvider.GetData<List<dynamic>>(string.Format("exam/forids?examIds={0}", selectedPaperIds));
 
                     examPapers.ForEach(delegate (dynamic examPaper) {
-                        fileId = examPaper.FileStoreId;
+                        string fileId = examPaper.FileStoreId;
 
                         request.Queue<Google.Apis.Drive.v2.Data.File>(service.Files.Get(fileId),
                             (file, error, x, message) =>
@@ -51,13 +50,14 @@ namespace IcasDrive.Controllers
                                 if (error != null) 
                                     throw new Exception("error");
                                 else
-                                    examLinksList.Add(new ExamLink { PaperName = examPaper.PaperName, PaperUrl = file.WebContentLink });
+                                    examLinksList.Add(new ExamLink { PaperName = examPaper.PaperName, PaperUrl = file.WebContentLink, FileId = fileId });
                             });
                     });
 
                     await request.ExecuteAsync();
 
                     selectionViewModel.ExamLinks = examLinksList;
+                    Session.Remove("SelectedIds");
                     return View(selectionViewModel);
                 }
                 catch (Exception ex)
@@ -72,8 +72,52 @@ namespace IcasDrive.Controllers
             }
         }
 
-        [HttpPost]
-        public ActionResult SendEmail(SelectionViewModel model)
+        public async Task<ActionResult> SendEmailAsync(CancellationToken cancellaionToken, SelectionViewModel model)
+        {
+            var result = await new AuthorizationCodeMvcApp(this, new AppFlowMetadata()).AuthorizeAsync(cancellaionToken);
+
+            if (result.Credential != null)
+            {
+                var service = new DriveService(new BaseClientService.Initializer
+                {
+                    HttpClientInitializer = result.Credential,
+                    ApplicationName = ApplicationName
+                });
+
+                var request = new BatchRequest(service);
+
+                try
+                {
+                    Google.Apis.Drive.v2.Data.Permission newPermission = new Google.Apis.Drive.v2.Data.Permission();
+                    newPermission.Value = model.EmailAddress;
+                    newPermission.Type = "user";
+                    newPermission.Role = "reader";
+                    //service.Permissions.Insert()
+                    model.ExamLinks.ForEach(delegate (ExamLink examLink) {
+                        request.Queue<Google.Apis.Drive.v2.Data.Permission>(service.Permissions.Insert(newPermission, examLink.FileId),
+                            (permission, error, x, message) =>
+                            {
+                                if (error != null)
+                                    throw new Exception("error");
+                            });
+                    });
+
+                    await request.ExecuteAsync();
+                    sendEmail(model);
+                    return View("Index", model);
+                }
+                catch (Exception ex)
+                {
+                    throw ex;
+                }
+            }
+            else
+            {
+                return new RedirectResult(result.RedirectUri);
+            }
+        }
+
+        private void sendEmail(SelectionViewModel model)
         {
             var emailTemplate = System.IO.File.ReadAllText(Server.MapPath(ConfigurationManager.AppSettings["EmailTemplatePath"]));
             var body = Engine.Razor.RunCompile(emailTemplate, "TemplateKey", typeof(SelectionViewModel), model);
@@ -94,8 +138,6 @@ namespace IcasDrive.Controllers
                     smtp.Send(mail);
                 }
             }
-
-            return View("Index", model);
         }
     }
 }

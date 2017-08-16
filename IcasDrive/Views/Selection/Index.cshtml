@@ -2,7 +2,7 @@
 @{
     ViewBag.Title = "Final Selection";
 }
-@using (Html.BeginForm("SendEMail", "Selection", FormMethod.Post))
+@using (Html.BeginForm("SendEmailAsync", "Selection", FormMethod.Post))
 {
 <div class="row">
     <br />
@@ -19,6 +19,7 @@
                         <td>@Model.ExamLinks[count].PaperName</td>
                         <td>@Html.HiddenFor(m => m.ExamLinks[count].PaperUrl)</td>
                         <td>@Html.HiddenFor(m => m.ExamLinks[count].PaperName)</td>
+                        <td>@Html.HiddenFor(m => m.ExamLinks[count].FileId)</td>
                     </tr>
                 }
             </table>
