@@ -103,7 +103,7 @@ namespace IcasDrive.Controllers
                     });
 
                     await request.ExecuteAsync();
-                    sendEmail(model);
+                    //sendEmail(model);
                     return View("Index", model);
                 }
                 catch (Exception ex)
