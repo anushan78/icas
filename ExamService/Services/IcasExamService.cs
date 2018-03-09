@@ -28,7 +28,8 @@ namespace ExamService.Services
         public List<ExamPaperDetails> GetByGrade(int gradeId)
         {
             var exams = ExamRepository.GetAll()
-                .Where(ex => ex.GradeId == gradeId);
+                .Where(ex => ex.GradeId == gradeId)
+                .OrderBy(pa => pa.PaperName);
             IMapper mapper = GetMapperForDto();
 
             return mapper.Map<List<ExamPaper>, List<ExamPaperDetails>>(exams.ToList());
