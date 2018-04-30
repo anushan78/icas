@@ -1,15 +1,15 @@
 ﻿<html>
 <body>
-    Hi @Model.CustomerName,
+   @* Hi @Model.CustomerName,*@
     Thank you very much for the prompt payment. Please find the download links for the requested papers:
     <table>
         <thead>Paper Name</thead>
-            @foreach (var examPaper in Model.ExamLinks)
+            @*@foreach (var examPaper in Model.ExamLinks)
             {
                 <tr>
                     <td><a href="@examPaper.PaperUrl" target="_blank">@examPaper.PaperName</a></td>
                 </tr>
-            }
+            }*@
     </table>
 </body>
 </html>

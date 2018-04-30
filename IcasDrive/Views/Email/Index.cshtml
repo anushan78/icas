@@ -1,0 +1,18 @@
+﻿@model IcasDrive.Models.EmailViewModel
+@{
+    ViewBag.Title = "Email";
+}
+@using (Html.BeginForm("Index", "Email", FormMethod.Post))
+{
+    <div class="row">
+        <br />
+        <br />
+        @Html.HiddenFor(m => m.LastRecordId)
+        <div class="form-group">
+            <span class="control-label col-sm-3 col-md-2"></span>
+            <div class="col-sm-9 col-md-10">
+                <button class="btn-default btn" type="submit">Send</button>
+            </div>
+        </div>
+    </div>
+}
